@@ -26,6 +26,9 @@ export default function ServiceCard({
       <Link
         to="/services/$serviceId"
         params={{ serviceId: String(service.id) }}
+        mask={{
+          to: "/services"
+        }}
         className="inline-flex rounded-md bg-primary px-4 py-2 text-primary-foreground"
       >
         View Details

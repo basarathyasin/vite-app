@@ -1,5 +1,6 @@
 import { useParams } from "@tanstack/react-router";
 import { services } from "@/data/services";
+import BackButton from "@/components/ui/BackButton";
 
 export default function ServiceDetail() {
   const { serviceId } = useParams({
@@ -17,7 +18,10 @@ export default function ServiceDetail() {
   }
 
   return (
+    <>
+    <BackButton/>
     <div className="p-6">
+      
       <h1 className="text-3xl font-bold">
         {service.name}
       </h1>
@@ -26,5 +30,6 @@ export default function ServiceDetail() {
         {service.price}
       </p>
     </div>
+    </>
   );
 }
