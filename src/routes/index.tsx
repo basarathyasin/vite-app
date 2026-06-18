@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import Home from '@/pages/Home'
+import Home from '@/App'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
