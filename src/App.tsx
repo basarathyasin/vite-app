@@ -1,34 +1,35 @@
-import { Link } from "@tanstack/react-router";
-
+import BenefitsSection from "@/components/sections/BenefitSection";
+import CTASection from "@/components/sections/CTASection";
+import FaqSection from "@/components/sections/FaqSection";
+import FeaturesSection from "@/components/sections/FeaturesSection";
+import Hero from "@/components/sections/HeroSection";
+import PricingSection from "@/components/sections/PricingSection";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen items-center bg-black px-8">
-      <section className="mx-auto flex max-w-6xl items-center justify-between gap-16">
-        <div>
-          <p className="mb-3 text-sm uppercase tracking-widest text-slate-500">
-            Digital Agency
-          </p>
-
-          <h1 className="mb-6 text-6xl font-bold text-white">
-            We Build
-            <br />
-            Modern Websites
-          </h1>
-
-          <Link
-            to="/services"
-            className="inline-flex rounded-md bg-white px-6 py-3 font-medium text-black"
-          >
-            View Services
-          </Link>
-        </div>
-
-        <p className="max-w-md text-lg text-slate-400">
-          Helping startups and businesses establish a strong online
-          presence through development, design, and marketing.
-        </p>
-      </section>
-    </main>
-  );
+	return (
+		<>
+			<Hero
+				badge="V2.0 is now live"
+				title="The new standard for modern software."
+				description="Build, ship, and scale with the most intuitive platform designed for elite
+       engineering teams. Move faster without breaking things."
+				image="/hero.png"
+				primaryAction={{
+					label: "Get Started",
+					href: "/products",
+				}}
+				secondaryAction={{
+					label: "Read Doc",
+					href: "/docs",
+				}}
+			/>
+			<FeaturesSection />
+			<BenefitsSection />
+			<TestimonialsSection />
+			<PricingSection />
+			<FaqSection />
+			<CTASection />
+		</>
+	);
 }
