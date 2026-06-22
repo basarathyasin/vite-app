@@ -4,7 +4,7 @@ export default function NotFound() {
 	return (
 		<main
 			data-not-found-page
-			className="grid min-h-[calc(100dvh-320px)] place-items-center bg-zinc-50 px-6 text-center"
+			className="grid flex-1 place-items-center bg-zinc-50 px-6 text-center"
 		>
 			<section className="max-w-xl">
 				<p className="font-heading text-sm font-bold uppercase tracking-[0.12em] text-zinc-500">

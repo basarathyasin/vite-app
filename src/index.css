@@ -135,8 +135,16 @@
 	body:has([data-not-found-page]) {
 		height: 100dvh;
 	}
-	body:has([data-not-found-page]) main {
-		padding-block: 0;
+	body:has([data-not-found-page]) #root {
+		display: flex;
+		min-height: 100dvh;
+		flex-direction: column;
+	}
+	body:has([data-not-found-page]) [data-not-found-page] {
+		min-height: 0;
+	}
+	body:has([data-not-found-page]) footer {
+		flex-shrink: 0;
 	}
 }
 
