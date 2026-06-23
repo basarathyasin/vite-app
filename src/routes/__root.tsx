@@ -31,7 +31,7 @@ function RootLayout() {
 	return (
 		<>
 			{!hideNavbar && (
-				<header className="sticky top-0 z-50 w-full bg-[#F8F9FA]/90 backdrop-blur-md">
+				<header className="sticky border-b top-0 z-50 w-full bg-[#F8F9FA]/90 backdrop-blur-md">
 					<div className="flex h-[72px] w-full items-center justify-between px-6 md:px-12">
 						<div className="flex items-center gap-12">
 							<Link
