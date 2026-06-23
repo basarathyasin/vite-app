@@ -13,12 +13,12 @@ export function FeatureCard({
   description,
 }: FeatureCardProps) {
   return (
-    <Card className="p-8">
-      <div className="text-black f">
+    <Card className="min-h-[230px] p-[33px]">
+      <div className="text-black">
         {icon}
       </div>
 
-      <h3 className="mt-3 font-heading  text-[24px] font-600 leading-8 tracking-[-0.48px] text-[#191C1D]">
+      <h3 className="mt-6 font-heading text-[24px] font-semibold leading-8 tracking-[-0.48px] text-[#191C1D]">
         {title}
       </h3>
 

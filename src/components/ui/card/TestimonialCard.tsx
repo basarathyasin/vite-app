@@ -15,13 +15,13 @@ export function TestimonialCard({
 	avatar,
 }: TestimonialCardProps) {
 	return (
-		<Card className="flex h-full flex-col justify-between p-10">
-			<p className="text-[24px] font-600  leading-8 tracking-tight p-5 justify-start">
-				&quot; {quote} &quot;
+		<Card className="flex min-h-[252px] flex-col justify-between p-10">
+			<p className="max-w-[460px] text-[24px] font-semibold leading-8 tracking-[-0.48px] text-[#191C1D]">
+				&quot;{quote}&quot;
 			</p>
 
 			<div className="flex items-center gap-4">
-				<div className="size-12 font-heading  rounded-full bg-zinc-200 overflow-hidden">
+				<div className="size-12 overflow-hidden rounded-full bg-zinc-200 font-heading">
 					{avatar && (
 						<img
 							src={avatar}
@@ -36,7 +36,7 @@ export function TestimonialCard({
 				<div>
 					<div className="font-heading text-base">{name}</div>
 
-					<div className="text-sm text-zinc-600">{role}</div>
+					<div className="text-sm text-[#585F6C]">{role}</div>
 				</div>
 			</div>
 		</Card>

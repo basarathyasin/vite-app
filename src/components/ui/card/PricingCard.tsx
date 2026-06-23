@@ -32,15 +32,15 @@ export function PricingCard({
 			className={cn(
 				"flex flex-col p-8 transition-colors",
 				featured
-					? "min-h-[560px] border-black bg-black text-white"
-					: "min-h-[520px] bg-white text-[#191C1D]"
+					? "min-h-[526px] border-black bg-black text-white"
+					: "min-h-[494px] bg-white text-[#191C1D]"
 			)}
 		>
 			<div>
 				{badge && (
 					<div className="mb-6 inline-flex rounded-full bg-white/10 px-3 py-1">
-						<span className="font-heading text-xs font-semibold uppercase tracking-[0.6px] text-white">
-							{badge}
+						<span className="font-heading text-xs font-semibold tracking-[0.6px] text-white">
+							{badge.charAt(0) + badge.slice(1).toLowerCase()}
 						</span>
 					</div>
 				)}

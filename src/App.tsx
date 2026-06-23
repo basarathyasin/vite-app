@@ -1,10 +1,12 @@
-import BenefitsSection from "@/components/sections/BenefitSection";
-import CTASection from "@/components/sections/CTASection";
-import FaqSection from "@/components/sections/FaqSection";
-import FeaturesSection from "@/components/sections/FeaturesSection";
-import Hero from "@/components/sections/HeroSection";
-import PricingSection from "@/components/sections/PricingSection";
-import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import {
+	BenefitsSection,
+	CTASection,
+	FaqSection,
+	FeaturesSection,
+	Hero,
+	PricingSection,
+	TestimonialsSection,
+} from "@/components/sections";
 
 export default function Home() {
 	return (
@@ -20,7 +22,7 @@ export default function Home() {
 					href: "/products",
 				}}
 				secondaryAction={{
-					label: "Read Doc",
+					label: "Read Docs",
 					href: "/docs",
 				}}
 			/>
