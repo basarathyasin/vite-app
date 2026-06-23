@@ -1,5 +1,3 @@
-import { Link } from "@tanstack/react-router";
-
 interface Service {
   id: number;
   name: string;
@@ -23,16 +21,12 @@ export default function ServiceCard({
         Starting at {service.price}
       </p>
 
-      <Link
-        to="/services/$serviceId"
-        params={{ serviceId: String(service.id) }}
-        mask={{
-          to: "/services"
-        }}
+      <a
+        href={`/services/${service.id}`}
         className="inline-flex rounded-md bg-primary px-4 py-2 text-primary-foreground"
       >
         View Details
-      </Link>
+      </a>
     </div>
   );
 }
