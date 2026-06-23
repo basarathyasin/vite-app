@@ -16,7 +16,7 @@ export function TestimonialCard({
 }: TestimonialCardProps) {
 	return (
 		<Card className="flex min-h-[252px] flex-col justify-between p-10">
-			<p className="max-w-[460px] text-[24px] font-semibold leading-8 tracking-[-0.48px] text-[#191C1D]">
+			<p className="max-w-[460px] text-[22px] font-semibold leading-8 tracking-[-0.48px] text-[#191C1D]">
 				&quot;{quote}&quot;
 			</p>
 
