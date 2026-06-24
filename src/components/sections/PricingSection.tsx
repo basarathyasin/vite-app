@@ -20,7 +20,6 @@ const plans = [
 			"Unlimited projects",
 			"Advanced ML scaling",
 			"1TB bandwidth",
-			"Priority support",
 		],
 		cta: "Start 14-day Trial",
 		variant: "featured" as const,
@@ -41,7 +40,7 @@ const plans = [
 
 export default function PricingSection() {
 	return (
-		<section id="pricing" className="scroll-mt-24 pb-16 pt-24 md:px-8 md:pb-20 md:pt-40">
+		<section id="pricing" className="scroll-mt-24 px-6 pb-16 pt-40 md:px-12 md:pb-20">
 			<div className="mx-auto max-w-[1184px]">
 				<div className="mx-auto mb-12 max-w-xl text-center">
 					<h2 className="font-heading text-[32px] font-[600] leading-[40px] tracking-[-0.64px] text-[#191C1D]">

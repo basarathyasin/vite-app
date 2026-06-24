@@ -1,4 +1,4 @@
-import { Bot, Shield, Globe, Code2, Activity, Users } from "lucide-react";
+import { Activity, Bot, Code2, Globe, Shield, Users } from "lucide-react";
 import { FeatureCard } from "@/components/ui/card/FeatureCard";
 
 const features = [
@@ -45,9 +45,8 @@ const features = [
 export default function FeaturesSection() {
 
   return (
-    <section id="features" className="scroll-mt-24 py-16 md:px-8 md:py-20">
-      <div className="mx-auto max-w-[1280px]">
-        {/* Heading */}
+    <section id="features" className="scroll-mt-24 px-6 py-20 md:px-12">
+      <div className="mx-auto max-w-[1184px]">
         <div className="max-w-[672px]">
           <h2 className="font-heading text-[32px] font-semibold leading-[40px] tracking-[-0.64px] text-black">
             Engineered for velocity.
@@ -59,12 +58,11 @@ export default function FeaturesSection() {
           </p>
         </div>
 
-        {/* Cards */}
         <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {features.map((feature) => (
             <FeatureCard
               key={feature.title}
-              icon={<feature.icon className="size-6" />}
+              icon={<feature.icon className="size-6 stroke-[2.3]" />}
               title={feature.title}
               description={feature.description}
             />

@@ -4,7 +4,7 @@ const stats = [
     label: "UPTIME SLA",
   },
   {
-    value: "250ms+",
+    value: "250ms",
     label: "AVG LATENCY",
   },
   {
@@ -19,7 +19,7 @@ const stats = [
 
 export default function BenefitsSection() {
   return (
-    <section id="about" className="scroll-mt-24 pt-20">
+    <section id="about" className="scroll-mt-24 px-6 pt-20 md:px-12">
       <div className="mx-auto max-w-[1184px]">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {stats.map((stat) => (
