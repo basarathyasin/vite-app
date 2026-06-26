@@ -26,7 +26,10 @@ function RootLayout() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const closeMenu = () => setIsOpen(false);
-	const hideNavbar = pathname === "/login" || pathname === "/signup";
+	const isAuthRoute = pathname === "/login" || pathname === "/signup";
+	const isDashboardRoute =
+		pathname === "/dashboard" || pathname.startsWith("/dashboard/");
+	const hideNavbar = isAuthRoute || isDashboardRoute;
 
 	return (
 		<div className="flex min-h-screen flex-col bg-[#F8FAFC]">
@@ -114,14 +117,14 @@ function RootLayout() {
 					)}
 				</header>
 			)}
-			{hideNavbar ? (
+			{isAuthRoute ? (
 				<main className="flex w-full flex-1 items-center justify-center px-4 py-6">
 					<Outlet />
 				</main>
 			) : (
 				<Outlet />
 			)}
-			<Footer />
+			{!isDashboardRoute && <Footer />}
 		</div>
 	);
 }
