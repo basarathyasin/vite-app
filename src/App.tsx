@@ -19,7 +19,7 @@ export default function Home() {
 				image="/hero.png"
 				primaryAction={{
 					label: "Get Started",
-					href: "/products",
+					href: "/signup",
 				}}
 				secondaryAction={{
 					label: "Read Docs",

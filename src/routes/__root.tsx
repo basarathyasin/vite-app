@@ -29,7 +29,7 @@ function RootLayout() {
 	const hideNavbar = pathname === "/login" || pathname === "/signup";
 
 	return (
-		<>
+		<div className="flex min-h-screen flex-col bg-[#F8FAFC]">
 			{!hideNavbar && (
 				<header className="sticky border-b top-0 z-50 w-full bg-[#F8F9FA]/90 backdrop-blur-md">
 					<div className="flex h-[72px] w-full items-center justify-between px-6 md:px-12">
@@ -114,8 +114,14 @@ function RootLayout() {
 					)}
 				</header>
 			)}
-			<Outlet />
+			{hideNavbar ? (
+				<main className="flex w-full flex-1 items-center justify-center px-4 py-6">
+					<Outlet />
+				</main>
+			) : (
+				<Outlet />
+			)}
 			<Footer />
-		</>
+		</div>
 	);
 }
