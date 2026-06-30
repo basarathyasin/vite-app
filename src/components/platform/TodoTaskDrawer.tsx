@@ -31,7 +31,9 @@ export function TodoTaskDrawer({
 }: TodoTaskDrawerProps) {
   return (
     <Drawer direction="right" open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className={cn("w-[min(420px,92vw)]", classNames?.content)}>
+      <DrawerContent
+        className={cn("h-svh w-[min(420px,92vw)]", classNames?.content)}
+      >
         <DrawerHeader
           className={cn("border-b px-5 py-5 text-left", classNames?.header)}
         >

@@ -69,7 +69,7 @@ export function TodoDatePicker({
 				type="button"
 				variant="outline"
 				className={cn(
-					"h-8 w-full justify-between rounded-lg px-2.5 font-normal",
+					"h-10 w-full justify-between rounded-lg border-[#CBD5E1] bg-white px-3 font-normal",
 					!value && "text-muted-foreground",
 					error && "border-red-500",
 					buttonClassName,
@@ -81,25 +81,41 @@ export function TodoDatePicker({
 			</Button>
 
 			{open && (
-				<div className="rounded-xl border bg-white p-2 shadow-sm">
-					<Calendar
-						mode="single"
-						selected={selectedDate}
-						disabled={{ before: getToday() }}
-						onSelect={(date) => onChange(formatDateValue(date))}
-					/>
-					<div className="-mx-2 -mb-2 mt-2 flex justify-end gap-2 border-t p-3">
-						<Button
-							type="button"
-							variant="outline"
-							size="sm"
-							onClick={() => onChange(undefined)}
-						>
-							{text.clearButton}
-						</Button>
-						<Button type="button" size="sm" onClick={() => setOpen(false)}>
-							{text.doneButton}
-						</Button>
+				<div
+					className="fixed inset-0 z-[80] flex items-center justify-center bg-black/10 px-4"
+					onClick={() => setOpen(false)}
+				>
+					<div
+						className="w-fit rounded-xl border bg-white p-3 shadow-xl"
+						onClick={(event) => event.stopPropagation()}
+					>
+						<Calendar
+							mode="single"
+							selected={selectedDate}
+							disabled={{ before: getToday() }}
+							onSelect={(date) => {
+								onChange(formatDateValue(date));
+								if (date) {
+									setOpen(false);
+								}
+							}}
+						/>
+						<div className="-mx-3 -mb-3 mt-2 flex justify-end gap-2 border-t p-3">
+							<Button
+								type="button"
+								variant="outline"
+								size="sm"
+								onClick={() => {
+									onChange(undefined);
+									setOpen(false);
+								}}
+							>
+								{text.clearButton}
+							</Button>
+							<Button type="button" size="sm" onClick={() => setOpen(false)}>
+								{text.doneButton}
+							</Button>
+						</div>
 					</div>
 				</div>
 			)}
