@@ -25,9 +25,12 @@ export function TestimonialCard({
 					{avatar && (
 						<img
 							src={avatar}
-							alt={name}
-							width={100}
-							height={100}
+							alt={`${name}, ${role}`}
+							width={160}
+							height={160}
+							loading="lazy"
+							decoding="async"
+							sizes="48px"
 							className="h-full w-full object-cover"
 						/>
 					)}
