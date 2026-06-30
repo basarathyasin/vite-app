@@ -7,6 +7,7 @@ import {
 	PricingSection,
 	TestimonialsSection,
 } from "@/components/sections";
+import heroDashboardImage from "@/assets/images/hero-dashboard.webp";
 
 export default function Home() {
 	return (
@@ -16,7 +17,8 @@ export default function Home() {
 				title="The new standard for modern software."
 				description="Build, ship, and scale with the most intuitive platform designed for elite
        engineering teams. Move faster without breaking things."
-				image="/hero.png"
+				image={heroDashboardImage}
+				imageAlt="Modern software dashboard interface preview"
 				primaryAction={{
 					label: "Get Started",
 					href: "/signup",

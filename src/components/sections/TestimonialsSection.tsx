@@ -1,4 +1,6 @@
 import { TestimonialCard } from "@/components/ui/card/TestimonialCard";
+import alexRiveraAvatar from "@/assets/images/alex-rivera-avatar.webp";
+import sarahChenAvatar from "@/assets/images/sarah-chen-avatar.webp";
 
 const testimonials = [
   {
@@ -6,14 +8,14 @@ const testimonials = [
       "Premium didn't just speed up our deployment cycle; it changed how we think about scale. The abstraction layer is perfect.",
     name: "Alex Rivera",
     role: "CTO, HyperStream",
-    avatar: "/pl2.jpeg",
+    avatar: alexRiveraAvatar,
   },
   {
     quote:
       "The security features alone saved us six months of compliance prep. It's truly enterprise-ready from day one.",
     name: "Sarah Chen",
     role: "Founder, Vaulted",
-    avatar: "/pl1.jpeg",
+    avatar: sarahChenAvatar,
   },
 ];
 

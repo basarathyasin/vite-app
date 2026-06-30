@@ -6,6 +6,7 @@ interface HeroProps {
 	title: string;
 	description: string;
 	image: string;
+	imageAlt: string;
 
 	primaryAction?: {
 		label: string;
@@ -23,6 +24,7 @@ export default function Hero({
 	title,
 	description,
 	image,
+	imageAlt,
 	primaryAction,
 	secondaryAction,
 }: HeroProps) {
@@ -64,9 +66,12 @@ export default function Hero({
 				<div className="relative overflow-hidden rounded-2xl border border-[#CFC4C580] bg-white p-[17px] shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-1px_rgba(0,0,0,0.03)]">
 					<img
 						src={image}
-						alt={title}
+						alt={imageAlt}
 						width={1184}
-						height={676}
+						height={661}
+						loading="eager"
+						decoding="async"
+						sizes="(min-width: 1280px) 1150px, calc(100vw - 34px)"
 						className="aspect-[1151/642] h-auto w-full rounded-xl object-cover"
 					/>
 				</div>
