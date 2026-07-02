@@ -19,6 +19,7 @@ import {
 	FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/hooks/useAuth";
 
 const signupResolver: Resolver<SignupFormData> = async (values) => {
 	const result = signupSchema.safeParse(values);
@@ -53,6 +54,7 @@ export function SignupForm({
 	className,
 	...props
 }: React.ComponentProps<"div">) {
+	const { login } = useAuth();
 	const {
 		register,
 		handleSubmit,
@@ -70,9 +72,11 @@ export function SignupForm({
 
 	const onSubmit = async (data: SignupFormData) => {
 		try {
-			console.log(data);
-
 			localStorage.setItem("users", JSON.stringify(data));
+			login({
+				name: data.name,
+				email: data.email,
+			});
 
 			await new Promise((resolve) => setTimeout(resolve, 2000));
 

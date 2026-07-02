@@ -17,6 +17,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 
 export type DashboardSidebarClassNames = {
@@ -95,10 +96,12 @@ export function DashboardSidebar({
 											tooltip={item.label}
 											className={cn(
 												"h-10 rounded-lg px-3 font-medium transition-colors hover:bg-[#E6F4FF] hover:text-[#075985]",
+												"dark:hover:bg-white/10 dark:hover:text-white",
 												classNames?.menuButton,
 												active &&
 													cn(
 														"bg-[#DBEAFE] text-[#075985] shadow-[inset_3px_0_0_#0284C7]",
+														"dark:bg-white/10 dark:text-white dark:shadow-[inset_3px_0_0_#F8FAFC]",
 														classNames?.menuButtonActive,
 													),
 											)}
@@ -119,11 +122,12 @@ export function DashboardSidebar({
 			{footerLabel && (
 				<SidebarFooter
 					className={cn(
-						"p-4 text-sm text-muted-foreground",
+						"gap-3 p-4 text-sm text-muted-foreground",
 						classNames?.footer,
 					)}
 				>
-					{footerLabel}
+					<ThemeToggle showLabel width="full" className="justify-start px-3" />
+					<span>{footerLabel}</span>
 				</SidebarFooter>
 			)}
 		</Sidebar>

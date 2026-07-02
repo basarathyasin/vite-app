@@ -175,10 +175,13 @@ function TodoToastStack({ toasts }: { toasts: TodoToastItem[] }) {
 					<div
 						key={toast.id}
 						className={cn(
-							"rounded-xl border bg-white p-4 text-sm shadow-lg",
+							"rounded-xl border bg-white p-4 text-sm shadow-lg dark:bg-[#101214] dark:shadow-none",
 							tone === "success" && "border-emerald-200 text-emerald-950",
 							tone === "danger" && "border-red-200 text-red-950",
 							tone === "info" && "border-blue-200 text-blue-950",
+							tone === "success" && "dark:border-emerald-400/30 dark:text-emerald-100",
+							tone === "danger" && "dark:border-red-400/30 dark:text-red-100",
+							tone === "info" && "dark:border-blue-400/30 dark:text-blue-100",
 						)}
 					>
 						<div className="flex gap-3">
@@ -372,7 +375,7 @@ export function TodoTable({
 				)}
 			>
 				<div>
-					<h2 className="font-heading text-2xl font-semibold text-[#191C1D]">
+					<h2 className="font-heading text-2xl font-semibold text-[#191C1D] dark:text-white">
 						{text.title}
 					</h2>
 					<p className="mt-1 text-sm text-muted-foreground">{text.subtitle}</p>
@@ -403,7 +406,7 @@ export function TodoTable({
 
 			<div
 				className={cn(
-					"overflow-hidden rounded-xl border bg-white",
+					"overflow-hidden rounded-xl border bg-white dark:border-white/10 dark:bg-[#101214]",
 					classNames?.tableShell,
 				)}
 			>
@@ -432,7 +435,7 @@ export function TodoTable({
 									className="h-40 text-center"
 								>
 									<div>
-										<p className="font-medium text-[#191C1D]">
+										<p className="font-medium text-[#191C1D] dark:text-white">
 											{text.emptyTitle}
 										</p>
 										<p className="mt-1 text-sm text-muted-foreground">
@@ -469,7 +472,7 @@ export function TodoTable({
 														? "Mark task todo"
 														: "Mark task done"
 												}
-												className="size-4 rounded border-input accent-[#191C1D]"
+												className="size-4 rounded border-input accent-[#191C1D] dark:accent-white"
 											/>
 										</TableCell>
 									)}
@@ -478,9 +481,9 @@ export function TodoTable({
 										<TableCell className="px-4">
 											<span
 												className={cn(
-													"font-medium text-[#191C1D]",
+													"font-medium text-[#191C1D] dark:text-white",
 													todo.status === "done" &&
-														"text-muted-foreground line-through",
+														"text-muted-foreground line-through dark:text-zinc-500",
 												)}
 											>
 												{todo.title}
@@ -490,7 +493,7 @@ export function TodoTable({
 
 									{columns.has("priority") && (
 										<TableCell>
-											<span className="text-sm text-[#191C1D]">
+											<span className="text-sm text-[#191C1D] dark:text-zinc-200">
 												{getPriorityLabel(todo.priority)}
 											</span>
 										</TableCell>
@@ -498,7 +501,7 @@ export function TodoTable({
 
 									{columns.has("dueDate") && (
 										<TableCell>
-											<span className="text-sm text-[#191C1D]">
+											<span className="text-sm text-[#191C1D] dark:text-zinc-200">
 												{todo.dueDate || "No date"}
 											</span>
 										</TableCell>
@@ -506,12 +509,12 @@ export function TodoTable({
 
 									{columns.has("actions") && (
 										<TableCell className="text-right">
-											<div className="ml-auto flex w-fit items-center gap-2 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] p-1">
+											<div className="ml-auto flex w-fit items-center gap-2 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] p-1 dark:border-white/10 dark:bg-white/5">
 												<Button
 													type="button"
 													size="icon-xs"
 													variant="secondary"
-													className="size-9 rounded-lg border border-[#93C5FD] bg-[#DBEAFE] p-2 text-[#075985] shadow-none hover:bg-[#BFDBFE]"
+													className="size-9 rounded-lg border border-[#93C5FD] bg-[#DBEAFE] p-2 text-[#075985] shadow-none hover:bg-[#BFDBFE] dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-200 dark:hover:bg-sky-400/20"
 													onClick={() => openEditDrawer(todo.id)}
 													aria-label="Edit task"
 												>
@@ -521,7 +524,7 @@ export function TodoTable({
 													type="button"
 													size="icon-xs"
 													variant="destructive"
-													className="size-9 rounded-lg border border-[#FCA5A5] bg-[#FEE2E2] p-2 text-[#B91C1C] shadow-none hover:bg-[#FECACA]"
+													className="size-9 rounded-lg border border-[#FCA5A5] bg-[#FEE2E2] p-2 text-[#B91C1C] shadow-none hover:bg-[#FECACA] dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-200 dark:hover:bg-red-400/20"
 													onClick={() => deleteTodo(todo.id)}
 													aria-label="Delete task"
 												>

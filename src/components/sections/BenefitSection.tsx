@@ -27,11 +27,11 @@ export default function BenefitsSection() {
               key={stat.label}
               className="flex flex-col items-center gap-4 text-center"
             >
-              <h4 className="font-heading text-[32px] font-semibold leading-[40px] tracking-[-0.64px] text-black">
+              <h4 className="font-heading text-[32px] font-semibold leading-[40px] tracking-[-0.64px] text-black dark:text-white">
                 {stat.value}
               </h4>
 
-              <p className=" text-[12px] font-medium uppercase tracking-[1.4px] text-[#585F6C]">
+              <p className=" text-[12px] font-medium uppercase tracking-[1.4px] text-[#585F6C] dark:text-zinc-400">
                 {stat.label}
               </p>
             </div>
