@@ -1,4 +1,6 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { UserInitial } from "@/components/ui/user-initial";
 import { cn } from "@/lib/utils";
 
 export type DashboardNavbarClassNames = {
@@ -32,7 +34,7 @@ export function DashboardNavbar({
 				<div className={cn("min-w-0", classNames?.titleWrap)}>
 					<h1
 						className={cn(
-							"truncate font-heading text-base font-semibold text-[#191C1D]",
+							"truncate font-heading text-base font-semibold text-[#191C1D] dark:text-white",
 							classNames?.title,
 						)}
 					>
@@ -50,6 +52,11 @@ export function DashboardNavbar({
 						</p>
 					)}
 				</div>
+			</div>
+
+			<div className="flex items-center gap-2">
+				<ThemeToggle />
+				<UserInitial />
 			</div>
 		</header>
 	);

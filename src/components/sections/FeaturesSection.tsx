@@ -48,11 +48,11 @@ export default function FeaturesSection() {
     <section id="features" className="scroll-mt-24 px-6 py-20 md:px-12">
       <div className="mx-auto max-w-[1184px]">
         <div className="max-w-[672px]">
-          <h2 className="font-heading text-[32px] font-semibold leading-[40px] tracking-[-0.64px] text-black">
+          <h2 className="font-heading text-[32px] font-semibold leading-[40px] tracking-[-0.64px] text-black dark:text-white">
             Engineered for velocity.
           </h2>
 
-          <p className="mt-4 text-base leading-6 text-[#585F6C]">
+          <p className="mt-4 text-base leading-6 text-[#585F6C] dark:text-zinc-400">
             Everything you need to manage complex infrastructure at any scale,
             without the configuration headache.
           </p>

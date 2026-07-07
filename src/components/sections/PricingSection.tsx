@@ -43,11 +43,11 @@ export default function PricingSection() {
 		<section id="pricing" className="scroll-mt-24 px-6 pb-16 pt-40 md:px-12 md:pb-20">
 			<div className="mx-auto max-w-[1184px]">
 				<div className="mx-auto mb-12 max-w-xl text-center">
-					<h2 className="font-heading text-[32px] font-[600] leading-[40px] tracking-[-0.64px] text-[#191C1D]">
+					<h2 className="font-heading text-[32px] font-[600] leading-[40px] tracking-[-0.64px] text-[#191C1D] dark:text-white">
 						Scalable pricing for scaling teams.
 					</h2>
 
-					<p className="mt-4 text-base text-[#585F6C]">
+					<p className="mt-4 text-base text-[#585F6C] dark:text-zinc-400">
 						Start for free and pay as you grow. No hidden fees.
 					</p>
 				</div>

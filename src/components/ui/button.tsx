@@ -19,19 +19,20 @@ const buttonVariants = cva(
 		variants: {
 			variant: {
 				default:
-					"bg-black text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-1px_rgba(0,0,0,0.03)] hover:bg-black/90",
+					"bg-black text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-1px_rgba(0,0,0,0.03)] hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-zinc-200",
 
 				secondary:
-					"border border-[#CFC4C5] bg-[#F8F9FA] text-[#191C1D] hover:bg-zinc-100",
+					"border border-[#CFC4C5] bg-[#F8F9FA] text-[#191C1D] hover:bg-zinc-100 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/15",
 
 				outline:
-					"border border-[#CFC4C5] bg-transparent text-[#191C1D] hover:bg-zinc-50",
+					"border border-[#CFC4C5] bg-transparent text-[#191C1D] hover:bg-zinc-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10",
 
-				ghost: "bg-transparent text-[#191C1D] hover:bg-zinc-100",
+				ghost:
+					"bg-transparent text-[#191C1D] hover:bg-zinc-100 dark:text-white dark:hover:bg-white/10",
 
 				destructive: "bg-red-600 text-white hover:bg-red-700",
 
-				link: "text-black underline-offset-4 hover:underline bg-transparent p-0 h-auto rounded-none",
+				link: "text-black underline-offset-4 hover:underline bg-transparent p-0 h-auto rounded-none dark:text-white",
 			},
 
 			size: {

@@ -17,6 +17,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useAuth } from "@/hooks/useAuth"
 
 type LoginFormData = {
   email: string
@@ -33,6 +34,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { login } = useAuth()
   const {
     register,
     handleSubmit,
@@ -67,8 +69,10 @@ export function LoginForm({
         return
       }
 
-      localStorage.setItem("isAuthenticated", "true")
-      localStorage.setItem("currentUser", JSON.stringify(user))
+      login({
+        name: user.name,
+        email: user.email,
+      })
 
       await new Promise((resolve) => setTimeout(resolve, 2000))
 

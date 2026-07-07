@@ -126,7 +126,7 @@
 		@apply scroll-smooth font-sans;
 	}
 	body {
-		@apply bg-[#F8F9FA] text-foreground;
+		@apply bg-[#F8F9FA] text-foreground dark:bg-[#08090A];
 	}
 	html:has([data-not-found-page]),
 	body:has([data-not-found-page]) {
