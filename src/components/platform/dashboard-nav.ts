@@ -1,4 +1,4 @@
-import { CheckSquare, Home, ListTodo } from "lucide-react"
+import { CheckSquare, FolderKanban, Home, ListTodo } from "lucide-react"
 
 export type DashboardNavItem = {
   label: string
@@ -16,6 +16,11 @@ export const dashboardNavItems: DashboardNavItem[] = [
     label: "Task",
     href: "/dashboard/tasks",
     icon: ListTodo,
+  },
+  {
+    label: "Projects",
+    href: "/dashboard/projects",
+    icon: FolderKanban,
   },
   {
     label: "Completed",

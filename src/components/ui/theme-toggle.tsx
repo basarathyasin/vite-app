@@ -36,7 +36,7 @@ export function ThemeToggle({
 			width={width}
 		>
 			{isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-			{showLabel && <span>{isDark ? "Light" : "Dark"}</span>}
+			{showLabel && <span>{isDark ? "Dark" : "Light"}</span>}
 		</Button>
 	);
 }

@@ -10,17 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as MultiStepFormRouteImport } from './routes/multi-step-form'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardTasksRouteImport } from './routes/dashboard.tasks'
+import { Route as DashboardProjectsRouteImport } from './routes/dashboard.projects'
 import { Route as DashboardCompletedRouteImport } from './routes/dashboard.completed'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MultiStepFormRoute = MultiStepFormRouteImport.update({
+  id: '/multi-step-form',
+  path: '/multi-step-form',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -53,6 +60,11 @@ const DashboardTasksRoute = DashboardTasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardProjectsRoute = DashboardProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardCompletedRoute = DashboardCompletedRouteImport.update({
   id: '/completed',
   path: '/completed',
@@ -65,8 +77,10 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
+  '/multi-step-form': typeof MultiStepFormRoute
   '/signup': typeof SignupRoute
   '/dashboard/completed': typeof DashboardCompletedRoute
+  '/dashboard/projects': typeof DashboardProjectsRoute
   '/dashboard/tasks': typeof DashboardTasksRoute
 }
 export interface FileRoutesByTo {
@@ -75,8 +89,10 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
+  '/multi-step-form': typeof MultiStepFormRoute
   '/signup': typeof SignupRoute
   '/dashboard/completed': typeof DashboardCompletedRoute
+  '/dashboard/projects': typeof DashboardProjectsRoute
   '/dashboard/tasks': typeof DashboardTasksRoute
 }
 export interface FileRoutesById {
@@ -86,8 +102,10 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
+  '/multi-step-form': typeof MultiStepFormRoute
   '/signup': typeof SignupRoute
   '/dashboard/completed': typeof DashboardCompletedRoute
+  '/dashboard/projects': typeof DashboardProjectsRoute
   '/dashboard/tasks': typeof DashboardTasksRoute
 }
 export interface FileRouteTypes {
@@ -98,8 +116,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/login'
+    | '/multi-step-form'
     | '/signup'
     | '/dashboard/completed'
+    | '/dashboard/projects'
     | '/dashboard/tasks'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,8 +128,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/login'
+    | '/multi-step-form'
     | '/signup'
     | '/dashboard/completed'
+    | '/dashboard/projects'
     | '/dashboard/tasks'
   id:
     | '__root__'
@@ -118,8 +140,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/login'
+    | '/multi-step-form'
     | '/signup'
     | '/dashboard/completed'
+    | '/dashboard/projects'
     | '/dashboard/tasks'
   fileRoutesById: FileRoutesById
 }
@@ -129,6 +153,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   LoginRoute: typeof LoginRoute
+  MultiStepFormRoute: typeof MultiStepFormRoute
   SignupRoute: typeof SignupRoute
 }
 
@@ -139,6 +164,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/multi-step-form': {
+      id: '/multi-step-form'
+      path: '/multi-step-form'
+      fullPath: '/multi-step-form'
+      preLoaderRoute: typeof MultiStepFormRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -183,6 +215,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardTasksRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/projects': {
+      id: '/dashboard/projects'
+      path: '/projects'
+      fullPath: '/dashboard/projects'
+      preLoaderRoute: typeof DashboardProjectsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/completed': {
       id: '/dashboard/completed'
       path: '/completed'
@@ -195,11 +234,13 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteChildren {
   DashboardCompletedRoute: typeof DashboardCompletedRoute
+  DashboardProjectsRoute: typeof DashboardProjectsRoute
   DashboardTasksRoute: typeof DashboardTasksRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardCompletedRoute: DashboardCompletedRoute,
+  DashboardProjectsRoute: DashboardProjectsRoute,
   DashboardTasksRoute: DashboardTasksRoute,
 }
 
@@ -213,6 +254,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRouteWithChildren,
   LoginRoute: LoginRoute,
+  MultiStepFormRoute: MultiStepFormRoute,
   SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport

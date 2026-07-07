@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router"
+import { Eye, EyeOff } from "lucide-react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
@@ -35,6 +37,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const { login } = useAuth()
+  const [showPassword, setShowPassword] = useState(false)
   const {
     register,
     handleSubmit,
@@ -89,12 +92,12 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col", className)} {...props}>
-      <Card className="rounded-xl border-[#E2E8F0] bg-white shadow-sm">
+      <Card className="rounded-xl border-[#E2E8F0] bg-white shadow-sm dark:border-white/10 dark:bg-[#111315]">
         <CardHeader className="gap-1.5 px-5 pt-5 text-center">
-          <CardTitle className="text-xl font-semibold text-[#111827]">
+          <CardTitle className="text-xl font-semibold text-[#111827] dark:text-white">
             Login to your account
           </CardTitle>
-          <CardDescription className="text-sm text-[#64748B]">
+          <CardDescription className="text-sm text-[#64748B] dark:text-zinc-400">
             Enter your email and password to continue.
           </CardDescription>
         </CardHeader>
@@ -103,12 +106,12 @@ export function LoginForm({
           <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup className="gap-4">
               <Field>
-                <FieldLabel className="text-[#334155]">Email</FieldLabel>
+                <FieldLabel className="text-[#334155] dark:text-zinc-200">Email</FieldLabel>
 
                 <Input
                   type="email"
                   placeholder="m@example.com"
-                  className="h-10 border-[#CBD5E1] bg-white px-3"
+                  className="h-10 border-[#CBD5E1] bg-white px-3 text-[#111827] placeholder:text-[#94A3B8] dark:border-white/15 dark:bg-white/10 dark:text-white dark:placeholder:text-zinc-500"
                   aria-invalid={Boolean(errors.email)}
                   {...register("email")}
                 />
@@ -121,22 +124,34 @@ export function LoginForm({
 
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel className="text-[#334155]">Password</FieldLabel>
+                  <FieldLabel className="text-[#334155] dark:text-zinc-200">Password</FieldLabel>
 
                   <a
                     href="#"
-                    className="ml-auto text-sm text-[#2563EB] hover:underline"
+                    className="ml-auto text-sm text-[#2563EB] hover:underline dark:text-sky-400"
                   >
                     Forgot password?
                   </a>
                 </div>
 
-                <Input
-                  type="password"
-                  className="h-10 border-[#CBD5E1] bg-white px-3"
-                  aria-invalid={Boolean(errors.password)}
-                  {...register("password")}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    className="h-10 border-[#CBD5E1] bg-white px-3 pr-10 text-[#111827] dark:border-white/15 dark:bg-white/10 dark:text-white"
+                    aria-invalid={Boolean(errors.password)}
+                    {...register("password")}
+                  />
+                  <Button
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute right-1 top-1/2 size-8 -translate-y-1/2 text-[#64748B] hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-white/10"
+                    onClick={() => setShowPassword((current) => !current)}
+                    size="icon-xs"
+                    type="button"
+                    variant="ghost"
+                  >
+                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  </Button>
+                </div>
                 {errors.password && (
                   <p className="text-sm text-red-600">
                     {errors.password.message}
@@ -153,11 +168,11 @@ export function LoginForm({
                 {isSubmitting ? "Logging in..." : "Login"}
               </Button>
 
-              <FieldDescription className="text-center text-[#64748B]">
+              <FieldDescription className="text-center text-[#64748B] dark:text-zinc-400">
                 Don&apos;t have an account?{" "}
                 <Link
                   to="/signup"
-                  className="font-medium text-[#2563EB] hover:underline"
+                  className="font-medium text-[#2563EB] hover:underline dark:text-sky-400"
                 >
                   Sign up
                 </Link>
