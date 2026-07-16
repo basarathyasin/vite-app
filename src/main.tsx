@@ -8,6 +8,8 @@ import "@/index.css"
 import { routeTree } from './routeTree.gen'
 import AuthProvider from "@/providers/AuthProvider"
 import ThemeProvider from "@/providers/ThemeProvider"
+import ApolloProvider from "@/providers/ApolloProvider"
+import QueryProvider from "@/providers/QueryProvider"
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -27,7 +29,11 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <AuthProvider>
         <ThemeProvider>
-          <RouterProvider router={router} />
+          <ApolloProvider>
+            <QueryProvider>
+              <RouterProvider router={router} />
+            </QueryProvider>
+          </ApolloProvider>
         </ThemeProvider>
       </AuthProvider>
     </StrictMode>,
