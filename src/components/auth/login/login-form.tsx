@@ -20,14 +20,9 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useAuth } from "@/hooks/useAuth"
+import { loginStrapiUser } from "@/lib/auth/strapiAuth"
 
 type LoginFormData = {
-  email: string
-  password: string
-}
-
-type User = {
-  name: string
   email: string
   password: string
 }
@@ -47,45 +42,19 @@ export function LoginForm({
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const storedUsers = localStorage.getItem("users")
-
-      if (!storedUsers) {
-        setError("email", {
-          type: "manual",
-          message: "No users found. Please sign up first.",
-        })
-        return
-      }
-
-      const parsed = JSON.parse(storedUsers)
-      const users: User[] = Array.isArray(parsed) ? parsed : [parsed]
-
-      const user = users.find(
-        (user) => user.email === data.email && user.password === data.password,
-      )
-
-      if (!user) {
-        setError("password", {
-          type: "manual",
-          message: "Invalid email or password.",
-        })
-        return
-      }
-
-      login({
-        name: user.name,
-        email: user.email,
-      })
-
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const session = await loginStrapiUser(data)
+      login(session)
 
       window.location.replace("/dashboard")
     } catch (error) {
       console.error(error)
 
-      setError("email", {
+      setError("password", {
         type: "manual",
-        message: "Something went wrong. Please try again.",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Something went wrong. Please try again.",
       })
     }
   }

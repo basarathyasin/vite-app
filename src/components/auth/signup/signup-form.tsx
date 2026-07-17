@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
+import { registerStrapiUser } from "@/lib/auth/strapiAuth";
 
 const signupResolver: Resolver<SignupFormData> = async (values) => {
 	const result = signupSchema.safeParse(values);
@@ -63,6 +64,7 @@ export function SignupForm({
 		register,
 		handleSubmit,
 		reset,
+		setError,
 		formState: { errors, isSubmitting },
 	} = useForm<SignupFormData>({
 		resolver: signupResolver,
@@ -76,19 +78,25 @@ export function SignupForm({
 
 	const onSubmit = async (data: SignupFormData) => {
 		try {
-			localStorage.setItem("users", JSON.stringify(data));
-			login({
+			const session = await registerStrapiUser({
 				name: data.name,
 				email: data.email,
+				password: data.password,
 			});
-
-			await new Promise((resolve) => setTimeout(resolve, 2000));
+			login(session);
 
 			reset();
 
 			window.location.replace("/dashboard");
 		} catch (error) {
 			console.error(error);
+			setError("email", {
+				type: "manual",
+				message:
+					error instanceof Error
+						? error.message
+						: "Something went wrong. Please try again.",
+			});
 		}
 	};
 
