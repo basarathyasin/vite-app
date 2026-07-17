@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import { RequireAuth } from "@/components/auth/RequireAuth"
 import { DashboardShell } from "@/components/platform/DashboardShell"
 import DashboardPage from "@/pages/dashboard/DashboardPage"
 import { Outlet, createFileRoute, useRouterState } from "@tanstack/react-router"
@@ -13,8 +14,10 @@ function DashboardRoutePage() {
   })
 
   return (
-    <DashboardShell>
-      {pathname === "/dashboard" ? <DashboardPage /> : <Outlet />}
-    </DashboardShell>
+    <RequireAuth>
+      <DashboardShell>
+        {pathname === "/dashboard" ? <DashboardPage /> : <Outlet />}
+      </DashboardShell>
+    </RequireAuth>
   )
 }

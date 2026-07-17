@@ -1,30 +1,45 @@
+import { gql } from "@apollo/client";
+
 import type { TodoTaskFormValues } from "@/components/platform/TodoTaskForm";
+import { apolloClient } from "@/lib/apolloClient";
 import type { TodoApiResponse } from "@/lib/transformTodo";
 
-const TODOS_API_URL =
-	import.meta.env.VITE_TODOS_API_URL ??
-	"https://jsonplaceholder.typicode.com/todos";
+const CREATE_TODO = gql`
+	mutation CreateTodo($data: TodoInput!) {
+		createTodo(data: $data) {
+			documentId
+			title
+			priority
+			due
+			checkbox
+			stats
+		}
+	}
+`;
+
+type CreateTodoResponse = {
+	createTodo: TodoApiResponse;
+};
 
 export async function createTodo(
 	values: TodoTaskFormValues,
 ): Promise<TodoApiResponse> {
-	const response = await fetch(TODOS_API_URL, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
+	const { data } = await apolloClient.mutate<CreateTodoResponse>({
+		mutation: CREATE_TODO,
+		variables: {
+			data: {
+				title: values.title,
+				priority: values.priority,
+				due: values.dueDate,
+				checkbox: false,
+				stats: "todo",
+			},
 		},
-		body: JSON.stringify({
-			title: values.title,
-			task: values.title,
-			completed: false,
-			priority: values.priority,
-			date: values.dueDate,
-		}),
 	});
 
-	if (!response.ok) {
+	if (!data?.createTodo) {
 		throw new Error("Unable to create todo.");
 	}
 
-	return response.json();
+	return data.createTodo;
 }
