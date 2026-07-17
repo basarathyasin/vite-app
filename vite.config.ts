@@ -13,7 +13,15 @@ export default defineConfig({
 		react(),
 		tailwindcss(),
 	],
-	server: { port: 5175 },
+	server: {
+		port: 5175,
+		proxy: {
+			"/graphql": {
+				target: "http://localhost:1337",
+				changeOrigin: true,
+			},
+		},
+	},
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
