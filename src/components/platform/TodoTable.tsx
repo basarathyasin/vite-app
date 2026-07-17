@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { CheckCircle2, Info, Pencil, Plus, Search, Trash2 } from "lucide-react";
+import * as React from "react";
+import { Pencil, Plus, Search, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,16 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import {
+	TodoDeleteConfirmDialog,
+	type TodoDeleteConfirmDialogCopy,
+} from "@/components/platform/TodoDeleteConfirmDialog";
+import {
+	TodoToastStack,
+	type TodoToastItem,
+	type TodoToastStackClassNames,
+	type TodoToastTone,
+} from "@/components/platform/TodoToastStack";
+import {
 	TodoTaskForm,
 	type TodoTaskFormCopy,
 	type TodoTaskFormValues,
@@ -19,7 +29,7 @@ import {
 import { TodoTaskDrawer } from "@/components/platform/TodoTaskDrawer";
 import { cn } from "@/lib/utils";
 
-export type TodoStatus = "todo" | "in-progress" | "done";
+export type TodoStatus = "todo" | "done";
 export type TodoPriority = "low" | "medium" | "high";
 
 export type TodoItem = {
@@ -28,15 +38,6 @@ export type TodoItem = {
 	status: TodoStatus;
 	priority: TodoPriority;
 	dueDate?: string;
-};
-
-export type TodoToastTone = "success" | "danger" | "info";
-
-export type TodoToastItem = {
-	id: string;
-	title: string;
-	description?: string;
-	tone?: TodoToastTone;
 };
 
 export type TodoTableToastCopy = {
@@ -61,6 +62,7 @@ export type TodoTableCopy = {
 	editDrawerTitle: string;
 	form?: Partial<TodoTaskFormCopy>;
 	editForm?: Partial<TodoTaskFormCopy>;
+	deleteDialog?: Partial<TodoDeleteConfirmDialogCopy>;
 	toast?: Partial<TodoTableToastCopy>;
 };
 
@@ -69,18 +71,44 @@ export type TodoTableClassNames = {
 	header?: string;
 	tableShell?: string;
 	row?: string;
+	toasts?: TodoToastStackClassNames;
 };
 
 export type TodoTableProps = {
-	initialTodos?: TodoItem[];
+	todos: TodoItem[];
+	onCreate?: (values: TodoTaskFormValues) => void;
+	onUpdate?: (id: string, patch: Partial<TodoItem>) => void;
+	onDelete?: (id: string) => void;
+	onToggleStatus?: (id: string, status: TodoStatus) => void;
+	isCreating?: boolean;
+	deletingIds?: string[];
 	copy?: Partial<TodoTableCopy>;
 	priorityOptions?: Array<{ label: string; value: TodoPriority }>;
 	visibleColumns?: Array<
 		"completed" | "task" | "priority" | "dueDate" | "actions"
 	>;
-	statusFilter?: TodoStatus[];
 	classNames?: TodoTableClassNames;
-	onTodosChange?: (todos: TodoItem[]) => void;
+};
+
+const defaultCopy: TodoTableCopy = {
+	title: "Tasks",
+	subtitle: "Create, update, complete, and remove your to-dos.",
+	searchPlaceholder: "Search tasks...",
+	emptyTitle: "No tasks yet",
+	emptyDescription: "Add your first task to start organizing the day.",
+	addButton: "Add task",
+	drawerTitle: "Add task",
+	editDrawerTitle: "Edit task",
+	toast: {
+		deletedTitle: "Task deleted",
+		deletedDescription: "The task was removed from your list.",
+		completedTitle: "Task completed",
+		completedDescription: "Nice, that task is now marked done.",
+		reopenedTitle: "Task reopened",
+		reopenedDescription: "The task is back in your to-do list.",
+		updatedTitle: "Task updated",
+		updatedDescription: "Your task details were saved.",
+	},
 };
 
 const defaultToastCopy: TodoTableToastCopy = {
@@ -94,46 +122,10 @@ const defaultToastCopy: TodoTableToastCopy = {
 	updatedDescription: "Your task details were saved.",
 };
 
-const defaultCopy: TodoTableCopy = {
-	title: "Tasks",
-	subtitle: "Create, update, complete, and remove your to-dos.",
-	searchPlaceholder: "Search tasks...",
-	emptyTitle: "No tasks yet",
-	emptyDescription: "Add your first task to start organizing the day.",
-	addButton: "Add task",
-	drawerTitle: "Add task",
-	editDrawerTitle: "Edit task",
-	toast: defaultToastCopy,
-};
-
 const defaultPriorityOptions: NonNullable<TodoTableProps["priorityOptions"]> = [
 	{ label: "Low", value: "low" },
 	{ label: "Medium", value: "medium" },
 	{ label: "High", value: "high" },
-];
-
-const defaultTodos: TodoItem[] = [
-	{
-		id: "todo-1",
-		title: "Plan dashboard states",
-		status: "todo",
-		priority: "high",
-		dueDate: "2026-06-27",
-	},
-	{
-		id: "todo-2",
-		title: "Review task table interactions",
-		status: "in-progress",
-		priority: "medium",
-		dueDate: "2026-06-28",
-	},
-	{
-		id: "todo-3",
-		title: "Ship first usable to-do flow",
-		status: "done",
-		priority: "low",
-		dueDate: "2026-06-29",
-	},
 ];
 
 const defaultVisibleColumns: NonNullable<TodoTableProps["visibleColumns"]> = [
@@ -144,82 +136,18 @@ const defaultVisibleColumns: NonNullable<TodoTableProps["visibleColumns"]> = [
 	"actions",
 ];
 
-function createTodo(values: TodoTaskFormValues): TodoItem {
-	return {
-		id: `todo-${Date.now()}`,
-		title: values.title,
-		status: "todo",
-		priority: values.priority,
-		dueDate: values.dueDate,
-	};
-}
-
-function ToastIcon({ tone }: { tone: TodoToastTone }) {
-	if (tone === "danger") return <Trash2 className="size-4" />;
-	if (tone === "info") return <Info className="size-4" />;
-	return <CheckCircle2 className="size-4" />;
-}
-
-function TodoToastStack({ toasts }: { toasts: TodoToastItem[] }) {
-	if (toasts.length === 0) return null;
-
-	return (
-		<div
-			aria-live="polite"
-			className="fixed bottom-5 right-5 z-50 grid w-[min(360px,calc(100vw-32px))] gap-2"
-		>
-			{toasts.map((toast) => {
-				const tone = toast.tone ?? "success";
-
-				return (
-					<div
-						key={toast.id}
-						className={cn(
-							"rounded-xl border bg-white p-4 text-sm shadow-lg dark:bg-[#101214] dark:shadow-none",
-							tone === "success" && "border-emerald-200 text-emerald-950",
-							tone === "danger" && "border-red-200 text-red-950",
-							tone === "info" && "border-blue-200 text-blue-950",
-							tone === "success" && "dark:border-emerald-400/30 dark:text-emerald-100",
-							tone === "danger" && "dark:border-red-400/30 dark:text-red-100",
-							tone === "info" && "dark:border-blue-400/30 dark:text-blue-100",
-						)}
-					>
-						<div className="flex gap-3">
-							<div
-								className={cn(
-									"mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full",
-									tone === "success" && "bg-emerald-100 text-emerald-700",
-									tone === "danger" && "bg-red-100 text-red-700",
-									tone === "info" && "bg-blue-100 text-blue-700",
-								)}
-							>
-								<ToastIcon tone={tone} />
-							</div>
-
-							<div>
-								<p className="font-medium">{toast.title}</p>
-								{toast.description && (
-									<p className="mt-1 text-muted-foreground">
-										{toast.description}
-									</p>
-								)}
-							</div>
-						</div>
-					</div>
-				);
-			})}
-		</div>
-	);
-}
-
 export function TodoTable({
-	initialTodos = defaultTodos,
+	todos,
 	copy,
 	priorityOptions = defaultPriorityOptions,
 	visibleColumns = defaultVisibleColumns,
-	statusFilter,
 	classNames,
-	onTodosChange,
+	onCreate,
+	onDelete,
+	onUpdate,
+	onToggleStatus,
+	isCreating = false,
+	deletingIds = [],
 }: TodoTableProps) {
 	const text = {
 		...defaultCopy,
@@ -229,14 +157,21 @@ export function TodoTable({
 			...copy?.toast,
 		},
 	};
-	const [todos, setTodos] = useState<TodoItem[]>(initialTodos);
-	const [query, setQuery] = useState("");
-	const [drawerMode, setDrawerMode] = useState<"create" | "edit" | null>(null);
-	const [editingId, setEditingId] = useState<string | null>(null);
-	const [toasts, setToasts] = useState<TodoToastItem[]>([]);
-	const toastTimeoutsRef = useRef<Array<ReturnType<typeof setTimeout>>>([]);
 
-	useEffect(() => {
+	const [query, setQuery] = React.useState("");
+	const [drawerMode, setDrawerMode] = React.useState<"create" | "edit" | null>(
+		null,
+	);
+	const [editingId, setEditingId] = React.useState<string | null>(null);
+	const [deleteTargetId, setDeleteTargetId] = React.useState<string | null>(
+		null,
+	);
+	const [toasts, setToasts] = React.useState<TodoToastItem[]>([]);
+	const toastTimeoutsRef = React.useRef<Array<ReturnType<typeof setTimeout>>>(
+		[],
+	);
+
+	React.useEffect(() => {
 		const toastTimeouts = toastTimeoutsRef.current;
 
 		return () => {
@@ -244,36 +179,27 @@ export function TodoTable({
 		};
 	}, []);
 
-	const columns = useMemo(() => new Set(visibleColumns), [visibleColumns]);
-	const filterSet = useMemo(
-		() => (statusFilter ? new Set(statusFilter) : undefined),
-		[statusFilter],
+	const columns = React.useMemo(
+		() => new Set(visibleColumns),
+		[visibleColumns],
 	);
 
-	const updateTodos = (nextTodos: TodoItem[]) => {
-		setTodos(nextTodos);
-		onTodosChange?.(nextTodos);
-	};
+	const filteredTodos = React.useMemo(() => {
+		const q = query.trim().toLowerCase();
 
-	const filteredTodos = todos.filter((todo) => {
-		const matchesSearch = todo.title
-			.toLowerCase()
-			.includes(query.trim().toLowerCase());
-		const matchesStatus = filterSet ? filterSet.has(todo.status) : true;
-		return matchesSearch && matchesStatus;
-	});
+		return todos.filter((todo) => todo.title.toLowerCase().includes(q));
+	}, [todos, query]);
 
 	const editingTodo = todos.find((todo) => todo.id === editingId);
+	const deleteTarget = todos.find((todo) => todo.id === deleteTargetId);
 
-	const editDrawerValues = useMemo(
+	const editDrawerValues = React.useMemo(
 		() =>
-			editingTodo
-				? {
-						title: editingTodo.title,
-						priority: editingTodo.priority,
-						dueDate: editingTodo.dueDate,
-					}
-				: undefined,
+			editingTodo && {
+				title: editingTodo.title,
+				priority: editingTodo.priority,
+				dueDate: editingTodo.dueDate,
+			},
 		[editingTodo],
 	);
 
@@ -292,6 +218,11 @@ export function TodoTable({
 		setDrawerMode("edit");
 	};
 
+	const addTodo = (values: TodoTaskFormValues) => {
+		onCreate?.(values);
+		closeTaskDrawer();
+	};
+
 	const addToast = (
 		title: string,
 		description: string,
@@ -304,32 +235,23 @@ export function TodoTable({
 		]);
 
 		const timeout = setTimeout(() => {
-			setToasts((currentToasts) =>
-				currentToasts.filter((toast) => toast.id !== id),
+			setToasts((current) => current.filter((toast) => toast.id !== id));
+
+			toastTimeoutsRef.current = toastTimeoutsRef.current.filter(
+				(t) => t !== timeout,
 			);
 		}, 3000);
+
 		toastTimeoutsRef.current.push(timeout);
 	};
 
-	const addTodo = (values: TodoTaskFormValues) => {
-		updateTodos([createTodo(values), ...todos]);
-		closeTaskDrawer();
-	};
-
-	const updateTodo = (id: string, patch: Partial<TodoItem>) => {
-		updateTodos(
-			todos.map((todo) => (todo.id === id ? { ...todo, ...patch } : todo)),
-		);
-	};
-
 	const deleteTodo = (id: string) => {
-		updateTodos(todos.filter((todo) => todo.id !== id));
-		addToast(text.toast.deletedTitle, text.toast.deletedDescription, "danger");
+		onDelete?.(id);
 	};
 
 	const editTodo = (values: TodoTaskFormValues) => {
 		if (!editingTodo) return;
-		updateTodo(editingTodo.id, {
+		onUpdate?.(editingTodo.id, {
 			title: values.title,
 			priority: values.priority,
 			dueDate: values.dueDate,
@@ -338,19 +260,30 @@ export function TodoTable({
 		addToast(text.toast.updatedTitle, text.toast.updatedDescription, "success");
 	};
 
+	const confirmDelete = () => {
+		if (!deleteTarget) return;
+		deleteTodo(deleteTarget.id);
+		setDeleteTargetId(null);
+		addToast(text.toast.deletedTitle, text.toast.deletedDescription, "danger");
+	};
+
+	const priorityLabels = React.useMemo(
+		() =>
+			Object.fromEntries(
+				priorityOptions.map((p) => [p.value, p.label]),
+			) as Record<TodoPriority, string>,
+		[priorityOptions],
+	);
 	const getPriorityLabel = (priority: TodoPriority) =>
-		priorityOptions.find((option) => option.value === priority)?.label ??
-		priority;
+		priorityLabels[priority] ?? priority;
 
 	return (
 		<section className={cn("space-y-5", classNames?.root)}>
-			<TodoToastStack toasts={toasts} />
+			<TodoToastStack toasts={toasts} classNames={classNames?.toasts} />
 			<TodoTaskDrawer
 				open={drawerMode !== null}
 				onOpenChange={(open) => {
-					if (!open) {
-						closeTaskDrawer();
-					}
+					if (!open) closeTaskDrawer();
 				}}
 				title={drawerMode === "edit" ? text.editDrawerTitle : text.drawerTitle}
 			>
@@ -367,6 +300,15 @@ export function TodoTable({
 					defaultValues={drawerMode === "edit" ? editDrawerValues : undefined}
 				/>
 			</TodoTaskDrawer>
+			<TodoDeleteConfirmDialog
+				open={Boolean(deleteTarget)}
+				onOpenChange={(open) => {
+					if (!open) setDeleteTargetId(null);
+				}}
+				onConfirm={confirmDelete}
+				taskTitle={deleteTarget?.title}
+				copy={text.deleteDialog}
+			/>
 
 			<div
 				className={cn(
@@ -397,6 +339,7 @@ export function TodoTable({
 						size="sm"
 						onClick={openCreateDrawer}
 						className="gap-2"
+						disabled={isCreating}
 					>
 						<Plus className="size-4" />
 						{text.addButton}
@@ -454,9 +397,7 @@ export function TodoTable({
 												checked={todo.status === "done"}
 												onChange={(event) => {
 													const isDone = event.target.checked;
-													updateTodo(todo.id, {
-														status: isDone ? "done" : "todo",
-													});
+													onToggleStatus?.(todo.id, isDone ? "done" : "todo");
 													addToast(
 														isDone
 															? text.toast.completedTitle
@@ -525,8 +466,9 @@ export function TodoTable({
 													size="icon-xs"
 													variant="destructive"
 													className="size-9 rounded-lg border border-[#FCA5A5] bg-[#FEE2E2] p-2 text-[#B91C1C] shadow-none hover:bg-[#FECACA] dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-200 dark:hover:bg-red-400/20"
-													onClick={() => deleteTodo(todo.id)}
+													onClick={() => setDeleteTargetId(todo.id)}
 													aria-label="Delete task"
+													disabled={deletingIds.includes(todo.id)}
 												>
 													<Trash2 className="size-4" />
 												</Button>

@@ -1,55 +1,30 @@
 import { create } from "zustand";
 
 import {
-	defaultMultistepValues,
-	type MultistepFormValues,
+	emptyLeadFormValues,
+	type LeadFormValues,
 } from "@/components/forms/multistep-drawer/schema";
 
-export type ProjectSubmission = MultistepFormValues & {
-	id: string;
-	createdAt: string;
-};
-
-type MultistepDraftState = {
-	draft: MultistepFormValues;
-	submitted: MultistepFormValues | null;
-	projects: ProjectSubmission[];
-	updateDraft: (values: MultistepFormValues) => void;
+type LeadFormStore = {
+	draft: LeadFormValues;
+	submitted: LeadFormValues | null;
+	setDraft: (values: LeadFormValues) => void;
+	updateDraft: (values: LeadFormValues) => void;
 	clearDraft: () => void;
-	saveSubmitted: (values: MultistepFormValues) => void;
-	saveProject: (values: MultistepFormValues) => void;
+	saveSubmitted: (values: LeadFormValues) => void;
 };
 
-export const useMultistepDraftStore = create<MultistepDraftState>((set) => ({
-	draft: defaultMultistepValues,
+export const useLeadFormStore = create<LeadFormStore>((set) => ({
+	draft: emptyLeadFormValues,
 	submitted: null,
-	projects: [],
+	setDraft: (values) => set({ draft: values }),
 	updateDraft: (values) => set({ draft: values }),
-	clearDraft: () => set({ draft: defaultMultistepValues }),
+	clearDraft: () => set({ draft: emptyLeadFormValues }),
 	saveSubmitted: (values) =>
-		set((state) => ({
+		set({
 			submitted: values,
-			projects: [
-				...state.projects,
-				{
-					...values,
-					id: crypto.randomUUID(),
-					createdAt: new Date().toISOString(),
-				},
-			],
-			draft: defaultMultistepValues,
-		})),
-	saveProject: (values) =>
-		set((state) => ({
-			submitted: values,
-			projects: [
-				...state.projects,
-				{
-					...values,
-					id: crypto.randomUUID(),
-					createdAt: new Date().toISOString(),
-				},
-			],
-			draft: defaultMultistepValues,
-		})),
+			draft: emptyLeadFormValues,
+		}),
 }));
+
+export const useMultistepDraftStore = useLeadFormStore;
